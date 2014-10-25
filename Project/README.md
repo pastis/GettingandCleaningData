@@ -1,5 +1,5 @@
-GettingandCleaningData
-======================
+GettingandCleaningData Project
+==============================
 
 This is for the course offered on Coursera called Getting and Cleaning Data
 
