@@ -24,7 +24,7 @@ dtSubjectTesting  <- filetoDT(file.path(pathFiles, "UCI HAR Dataset/test",  "sub
 
 ## Process Activity Training and Testing records
 dtActivityTraining <- filetoDT(file.path(pathFiles, "UCI HAR Dataset/train", "Y_train.txt"))
-dtActivityTesting  <- filetoDT(file.path(pathFiles, "UCI HAR Dataset/test",   "Y_test.txt"))
+dtActivityTesting  <- filetoDT(file.path(pathFiles, "UCI HAR Dataset/test",  "Y_test.txt"))
 
 ## Process Training and Testing records
 dtTraining <- filetoDT(file.path(pathFiles, "UCI HAR Dataset/train", "X_train.txt"))
@@ -49,7 +49,29 @@ mt <- cbind(mgSubAct, mt)
 
 setkey(mt, subject, activityNum)
 
+##  Extract the mean and stadard deviation
 
+## process the features.txt file from UCI HAR Dataset file
+
+mtFeatures <-  filetoDT(file.path(pathFiles, "UCI HAR Dataset", "features.txt"))
+setnames(mtFeatures, names(mtFeatures), c("featureNum", "featureName"))
+
+# get only the mean and standard deviation using grepl
+
+mtFeatures <- mtFeatures[grepl("mean\\(\\)|std\\(\\)", featureName)]
+
+# convert column numbers to variable names
+
+mtFeatures$featureCode <-mtFeatures[, paste0("V", featureNum)]
+
+## DEBUG
+print(head (mtFeatures))
+print(mtFeatures$featureCode)
+
+#use variable names to subset
+ 
+select <-c(key(mt), mtFeatures$featureCode) 
+mt <- mt[, select, with=FALSE]
 
 
 
